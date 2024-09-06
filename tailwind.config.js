@@ -15,3 +15,9 @@ module.exports = {
   },
   plugins: [],
 };
+// #633cff
+//#EFEBFF
+//#FAFAFA
+//#FFFFFF
+//#333333
+//#737373
