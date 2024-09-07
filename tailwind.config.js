@@ -10,14 +10,14 @@ module.exports = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        primary: "#633cff", // Primary color
+        secondary: "#EFEBFF", // Secondary color
+        "bg-light": "#FAFAFA", // Background light color
+        "bg-main": "#FFFFFF", // Background main color
+        "text-dark": "#333333", // Text dark color
+        "text-light": "#737373", // Text light color
       },
     },
   },
   plugins: [],
 };
-// #633cff
-//#EFEBFF
-//#FAFAFA
-//#FFFFFF
-//#333333
-//#737373
