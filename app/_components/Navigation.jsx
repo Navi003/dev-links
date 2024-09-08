@@ -4,6 +4,7 @@ import logo from "@/assets/images/logo-devlinks-small.svg";
 import Image from "next/image";
 import Link from "next/link";
 import ProfileView from "./ProfileView";
+import Button from "./Button";
 
 export default function Navigation() {
   return (
@@ -14,12 +15,9 @@ export default function Navigation() {
       </div>
       <ProfileView />
       <div>
-        <Link
-          className="px-5 py-3 border-[1px] rounded-lg border-primary broder text-primary font-bold hover:bg-secondary"
-          href="/preview"
-        >
+        <Button type="link" href="/preview">
           Preview
-        </Link>
+        </Button>
       </div>
     </nav>
   );
