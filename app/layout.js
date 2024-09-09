@@ -1,5 +1,6 @@
 import localFont from "next/font/local";
 import "./globals.css";
+import { LinksProvider } from "./_components/useLinkContext";
 
 const instrumentSans = localFont({
   src: "./fonts/InstrumentSans-VariableFont_wdth,wght.ttf",
@@ -23,7 +24,7 @@ export default function RootLayout({ children }) {
       <body
         className={`${instrumentItalic.variable} ${instrumentSans.variable} antialiased bg-bg-light`}
       >
-        {children}
+        <LinksProvider>{children}</LinksProvider>
       </body>
     </html>
   );
