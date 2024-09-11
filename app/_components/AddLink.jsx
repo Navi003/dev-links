@@ -30,7 +30,7 @@ export default function AddLink({ id, link, onUpdateLink }) {
           <option value="Github">Github</option>
           <option value="Google">Google</option>
           <option value="Twitter">Twitter</option>
-          <option value="Leetcode">Leetcode</option>
+          <option value="Youtube">Leetcode</option>
         </select>
       </div>
       <div className="relative flex flex-col gap-1 mt-3">

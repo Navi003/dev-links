@@ -37,29 +37,47 @@ export default function Phone() {
 
       {/* Static content */}
 
-      {links.map((link, index) => (
-        <g key={index}>
-          {/* Rectangles for platforms */}
+      {links.map((link, index) => {
+        let fill;
 
-          <rect
-            width="237"
-            height="44"
-            x="35"
-            y={278 + index * 64} // Adjust y position dynamically
-            fill="#EEE"
-            rx="8"
-          />
-          {/* Platform text */}
-          <text
-            x="50" // Adjust text position within the rectangle
-            y={305 + index * 64} // Adjust text y position dynamically
-            fontSize="12"
-            fill="#000"
-          >
-            {link.platform}
-          </text>
-        </g>
-      ))}
+        if (link.platform === "Google") {
+          fill = "#EA4335"; // Google (Red)
+        } else if (link.platform === "Github") {
+          fill = "#181717"; // Github (Black)
+        } else if (link.platform === "YouTube") {
+          fill = "#FF0000"; // YouTube (Red)
+        } else if (link.platform === "LinkedIn") {
+          fill = "#0077B5"; // LinkedIn (Blue)
+        } else if (link.platform === "Twitter") {
+          fill = "#1DA1F2"; // Twitter (Blue)
+        }
+
+        console.log(fill);
+
+        return (
+          <g key={index}>
+            {/* Rectangles for platforms */}
+
+            <rect
+              width="237"
+              height="44"
+              x="35"
+              y={278 + index * 64} // Adjust y position dynamically
+              fill={fill}
+              rx="8"
+            />
+            {/* Platform text */}
+            <text
+              x="50" // Adjust text position within the rectangle
+              y={305 + index * 64} // Adjust text y position dynamically
+              fontSize="12"
+              fill="#000"
+            >
+              {link.platform}
+            </text>
+          </g>
+        );
+      })}
 
       {/* <rect width="237" height="44" x="35" y="278" fill="#EEE" rx="8" />
       <rect width="237" height="44" x="35" y="342" fill="#EEE" rx="8" />

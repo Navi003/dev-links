@@ -1,6 +1,9 @@
 import localFont from "next/font/local";
 import "./globals.css";
 import { LinksProvider } from "./_components/useLinkContext";
+import Navigation from "./_components/Navigation";
+import Container from "./_components/Container";
+import PhoneAside from "./_components/PhoneAside";
 
 const instrumentSans = localFont({
   src: "./fonts/InstrumentSans-VariableFont_wdth,wght.ttf",
@@ -24,7 +27,16 @@ export default function RootLayout({ children }) {
       <body
         className={`${instrumentItalic.variable} ${instrumentSans.variable} antialiased bg-bg-light`}
       >
-        <LinksProvider>{children}</LinksProvider>
+        <LinksProvider>
+          <Container>
+            <Navigation />
+
+            <main className="flex gap-4 mt-4">
+              <PhoneAside />
+              {children}
+            </main>
+          </Container>
+        </LinksProvider>
       </body>
     </html>
   );
