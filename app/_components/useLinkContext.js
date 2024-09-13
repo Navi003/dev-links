@@ -9,9 +9,12 @@ function LinksProvider({ children }) {
     link: "",
   });
   const [links, setLinks] = useState([]);
+  const [imageSrc, setImageSrc] = useState(null);
 
   return (
-    <LinksContext.Provider value={{ url, setUrl, links, setLinks }}>
+    <LinksContext.Provider
+      value={{ url, setUrl, links, setLinks, imageSrc, setImageSrc }}
+    >
       {children}
     </LinksContext.Provider>
   );
