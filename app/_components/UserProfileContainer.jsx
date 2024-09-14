@@ -9,7 +9,7 @@ import { useLinks } from "./useLinkContext";
 export default function UserProfileContainer() {
   // Create a reference for the hidden file input
   const fileInputRef = useRef(null);
-  const { imageSrc, setImageSrc } = useLinks();
+  const { imageSrc, setImageSrc, setUser, user } = useLinks();
 
   // Function to trigger the hidden file input click
   const handleImageClick = () => {
@@ -27,14 +27,20 @@ export default function UserProfileContainer() {
     }
   };
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    const updatedUser = { ...user, [name]: value };
+    setUser(updatedUser);
+  };
+
   return (
-    <div className="flex flex-col justify-between w-full bg-white rounded-lg p-14 gap-4">
+    <div className="flex flex-col justify-between w-full gap-4 bg-white rounded-lg p-14">
       <Heading text="Add your details to create a personal touch to your profile.">
         Customize your Profile
       </Heading>
-      <div className="bg-bg-light flex justify-between items-center rounded-md mt-4 p-6">
+      <div className="flex items-center justify-between p-6 mt-4 rounded-md bg-bg-light">
         <p>Profile Picture</p>
-        <div className="p-6 flex items-center">
+        <div className="flex items-center p-6">
           <input
             type="file"
             ref={fileInputRef}
@@ -42,7 +48,7 @@ export default function UserProfileContainer() {
             onChange={handleImageChange}
           />
 
-          <div className="bg-secondary rounded-md p-10 flex items-center justify-center flex-col">
+          <div className="flex flex-col items-center justify-center p-10 rounded-md bg-secondary">
             <Image
               src={uploadImage}
               height={50}
@@ -52,7 +58,7 @@ export default function UserProfileContainer() {
               onClick={handleImageClick} // Handle image click
             />
 
-            <span className="block font-bold text-primary text-xl">
+            <span className="block text-xl font-bold text-primary">
               + Upload Image
             </span>
           </div>
@@ -70,6 +76,7 @@ export default function UserProfileContainer() {
             placeholder="e.g John"
             name="firstName"
             className="flex-1 px-5 py-3 text-lg rounded-md "
+            onChange={handleChange}
           />
         </div>
         <div className="flex items-center justify-between mb-2">
@@ -78,7 +85,8 @@ export default function UserProfileContainer() {
             type="text"
             name="lastName"
             placeholder="e.g. Dave"
-            className="flex-1 px-5 py-3 text-lg rounded-md "
+            className="flex-1 px-5 py-3 text-lg rounded-md"
+            onChange={handleChange}
           />
         </div>
         <div className="flex items-center justify-between mb-2">
@@ -88,6 +96,7 @@ export default function UserProfileContainer() {
             name="email"
             placeholder="john@example.com"
             className="flex-1 px-5 py-3 text-lg rounded-md "
+            onChange={handleChange}
           />
         </div>
       </form>

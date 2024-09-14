@@ -1,12 +1,28 @@
 "use client";
+import Image from "next/image";
 import { useLinks } from "./useLinkContext"; // Assuming you're using context to get the links
+import twitter from "@/assets/images/icon-twitter.svg";
+import github from "@/assets/images/icon-github.svg"; // Import other logos as needed
+
+import gitlab from "@/assets/images/icon-gitlab.svg"; // Import other logos as needed
 
 export default function Phone() {
-  const { links, imageSrc } = useLinks(); // Get links and imageSrc from context or pass as props
+  const { links, imageSrc, user } = useLinks(); // Get links and imageSrc from context or pass as props
 
-  // Provide default values in case links array is not populated yet
-  const firstLink = links[0]?.link || "First Link Placeholder";
-  const secondLink = links[1]?.link || "Second Link Placeholder";
+  // A function to map platform names to their corresponding logo
+  const getPlatformLogo = (platform) => {
+    switch (platform) {
+      case "Twitter":
+        return twitter;
+      case "Github":
+        return github;
+      case "GithLab":
+        return gitlab;
+      // Add cases for other platforms, like Google, LinkedIn, YouTube
+      default:
+        return null; // If no logo is available
+    }
+  };
 
   return (
     <svg
@@ -49,57 +65,88 @@ export default function Phone() {
         />
       )}
 
-      {/* First Link - Dynamic */}
-      <rect width="160" height="16" x="73.5" y="185" fill="#EEE" rx="8" />
-      <text x="73.5" y="195" fontSize="10" fill="#000">
-        {/* {firstLink} */}
+      {/* User's full name (first name + last name) */}
+      <rect width="220" height="20" x="44" y="185" fill="#EEE" rx="10" />
+      <text
+        x="153.5" // Horizontally center text within the rect
+        y="199" // Adjust vertically (center within rect height)
+        fontSize="12"
+        fill="#000"
+        textAnchor="middle" // Center the text horizontally
+      >
+        {user.firstName} {user.lastName}
       </text>
 
-      {/* Second Link - Dynamic */}
-      <rect width="72" height="8" x="117.5" y="214" fill="#EEE" rx="4" />
-      <text x="117.5" y="220" fontSize="8" fill="#000">
-        {/* {secondLink} */}
+      {/* User's email */}
+      <rect width="220" height="20" x="44" y="215" fill="#EEE" rx="10" />
+      <text
+        x="153.5" // Horizontally center text within the rect
+        y="229" // Adjust vertically (center within rect height)
+        fontSize="10"
+        fill="#000"
+        textAnchor="middle" // Center the text horizontally
+      >
+        {user.email}
       </text>
 
       {/* Links rendered dynamically */}
-      {links.map((link, index) => {
-        let fill;
+      {links && links.length > 0 ? (
+        links.map((link, index) => {
+          const logo = getPlatformLogo(link.platform);
 
-        if (link.platform === "Google") {
-          fill = "#EA4335"; // Google (Red)
-        } else if (link.platform === "Github") {
-          fill = "#181717"; // Github (Black)
-        } else if (link.platform === "YouTube") {
-          fill = "#FF0000"; // YouTube (Red)
-        } else if (link.platform === "LinkedIn") {
-          fill = "#0077B5"; // LinkedIn (Blue)
-        } else if (link.platform === "Twitter") {
-          fill = "#1DA1F2"; // Twitter (Blue)
-        }
+          // Skip rendering if no platform or logo is available
+          if (!link.platform || !logo) return null;
 
-        return (
-          <g key={index}>
-            {/* Rectangles for platforms */}
-            <rect
-              width="237"
-              height="44"
-              x="35"
-              y={278 + index * 64} // Adjust y position dynamically
-              fill={fill}
-              rx="8"
-            />
-            {/* Platform text */}
-            <text
-              x="50" // Adjust text position within the rectangle
-              y={305 + index * 64} // Adjust text y position dynamically
-              fontSize="12"
-              fill="#000"
-            >
-              {link.platform}
-            </text>
-          </g>
-        );
-      })}
+          let fill;
+          if (link.platform === "Google") fill = "#EA4335"; // Google (Red)
+          else if (link.platform === "Github")
+            fill = "#181717"; // Github (Black)
+          else if (link.platform === "YouTube")
+            fill = "#FF0000"; // YouTube (Red)
+          else if (link.platform === "LinkedIn")
+            fill = "#0077B5"; // LinkedIn (Blue)
+          else if (link.platform === "Twitter") fill = "#1DA1F2"; // Twitter (Blue)
+
+          return (
+            <g key={index}>
+              {/* Rectangles for platforms */}
+              <rect
+                width="237"
+                height="44"
+                x="35"
+                y={278 + index * 64} // Adjust y position dynamically
+                fill={fill}
+                rx="8"
+              />
+              {/* Platform logo and text */}
+              <foreignObject
+                x="50"
+                y={285 + index * 64}
+                width="200"
+                height="44"
+              >
+                {/* Inline Flexbox for Logo and Text */}
+                <div className="flex items-center">
+                  <Image
+                    src={logo} // Get the correct logo for the platform
+                    alt={`${link.platform} logo`}
+                    width={24} // Adjust the logo size as needed
+                    height={24}
+                    style={{ marginRight: "8px" }} // Add some space between logo and text
+                  />
+                  <span className="text-xl font-semibold text-text-light">
+                    {link.platform}
+                  </span>
+                </div>
+              </foreignObject>
+            </g>
+          );
+        })
+      ) : (
+        <text x="50" y="300" fontSize="14" fill="#000">
+          No platforms available
+        </text> // Placeholder text if no links exist
+      )}
     </svg>
   );
 }

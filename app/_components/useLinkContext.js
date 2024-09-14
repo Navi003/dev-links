@@ -10,10 +10,24 @@ function LinksProvider({ children }) {
   });
   const [links, setLinks] = useState([]);
   const [imageSrc, setImageSrc] = useState(null);
+  const [user, setUser] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+  });
 
   return (
     <LinksContext.Provider
-      value={{ url, setUrl, links, setLinks, imageSrc, setImageSrc }}
+      value={{
+        url,
+        setUrl,
+        links,
+        setLinks,
+        imageSrc,
+        setImageSrc,
+        user,
+        setUser,
+      }}
     >
       {children}
     </LinksContext.Provider>
