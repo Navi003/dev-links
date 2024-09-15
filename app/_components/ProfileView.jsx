@@ -10,10 +10,10 @@ export default function ProfileView() {
   const [profileView, setProfileView] = useState(false);
 
   return (
-    <div className="flex items-center gap-4 text-xl">
+    <div className="flex flex-col items-center flex-1 gap-4 text-xl md:flex-row">
       <div
         onClick={() => setProfileView((state) => !state)}
-        className={`flex items-center justify-center px-8 py-4 transition-all space-x-2 rounded-lg ${
+        className={`flex items-center justify-center px-8 py-4 flex-1 transition-all space-x-2 rounded-lg ${
           profileView ? "text-text-light" : "text-primary bg-secondary"
         }`}
       >

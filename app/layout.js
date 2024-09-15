@@ -31,7 +31,7 @@ export default function RootLayout({ children }) {
           <Container>
             <Navigation />
 
-            <main className="flex gap-4 mt-4">
+            <main className="flex flex-col gap-4 mt-4 md:flex-row">
               <PhoneAside />
               {children}
             </main>
