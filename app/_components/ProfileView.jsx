@@ -24,7 +24,7 @@ export default function ProfileView() {
           alt="link"
           className="text-primary"
         />
-        <Link className="hover:text-primary" href="/">
+        <Link className="hover:text-primary" href="/links">
           Links
         </Link>
       </div>
