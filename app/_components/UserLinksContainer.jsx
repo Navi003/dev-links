@@ -8,13 +8,16 @@ import AddLink from "./AddLink";
 import { useLinks } from "./useLinkContext";
 import emptyLinkImage from "@/assets/images/illustration-empty.svg";
 import Image from "next/image";
+import { generateRandomId } from "@/app/lib/randomId";
 
 export default function UserLinksContainer() {
   const { links, setLinks } = useLinks();
 
   // Add an empty link object when the "Add new Link" button is clicked
   function addLinksHandler() {
-    setLinks((state) => [...state, { platform: "", link: "" }]);
+    const id = generateRandomId();
+
+    setLinks((state) => [...state, { platform: "", link: "", id }]);
   }
 
   // Function to update individual links based on index
@@ -23,6 +26,13 @@ export default function UserLinksContainer() {
       const newLinks = [...prevLinks];
       newLinks[index] = updatedLink;
       return newLinks;
+    });
+  };
+
+  const removeLinkHandler = (id) => {
+    console.log(id);
+    setLinks((prevLinks) => {
+      return prevLinks.filter((link) => link.id !== id);
     });
   };
 
@@ -46,6 +56,7 @@ export default function UserLinksContainer() {
               id={i}
               link={link}
               onUpdateLink={updateLinkHandler}
+              onRemoveLink={removeLinkHandler}
             />
           ))}
         </ul>

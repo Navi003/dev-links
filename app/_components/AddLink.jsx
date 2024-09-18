@@ -3,7 +3,7 @@ import Image from "next/image";
 import React from "react";
 import linkIcon from "@/assets/images/icon-link.svg";
 
-export default function AddLink({ id, link, onUpdateLink }) {
+export default function AddLink({ id, link, onUpdateLink, onRemoveLink }) {
   // Function to handle changes in both platform and link input fields
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -15,7 +15,7 @@ export default function AddLink({ id, link, onUpdateLink }) {
     <li className="p-5 mt-4 rounded-md bg-secondary">
       <div className="flex justify-between">
         <p>Link</p>
-        <p>remove</p>
+        <p onClick={() => onRemoveLink(id)}>Remove</p>
       </div>
       <div className="flex flex-col gap-1 mt-3 ">
         <label>Platform</label>
@@ -28,9 +28,8 @@ export default function AddLink({ id, link, onUpdateLink }) {
         >
           <option value="">Select a platform</option>
           <option value="Github">Github</option>
-          <option value="Google">Google</option>
+          <option value="Youtube">Youtube</option>
           <option value="Twitter">Twitter</option>
-          <option value="Youtube">Leetcode</option>
         </select>
       </div>
       <div className="relative flex flex-col gap-1 mt-3">

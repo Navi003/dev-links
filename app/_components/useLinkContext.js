@@ -7,6 +7,7 @@ function LinksProvider({ children }) {
   const [url, setUrl] = useState({
     platform: "",
     link: "",
+    id: "",
   });
   const [links, setLinks] = useState([]);
   const [imageSrc, setImageSrc] = useState(null);

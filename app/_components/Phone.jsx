@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useLinks } from "./useLinkContext"; // Assuming you're using context to get the links
 import twitter from "@/assets/images/icon-twitter.svg";
 import github from "@/assets/images/icon-github.svg"; // Import other logos as needed
-
+import youtube from "@/assets/images/icon-youtube.svg";
 import gitlab from "@/assets/images/icon-gitlab.svg"; // Import other logos as needed
 
 export default function Phone() {
@@ -14,11 +14,11 @@ export default function Phone() {
     switch (platform) {
       case "Twitter":
         return twitter;
+      case "Youtube":
+        return youtube;
       case "Github":
         return github;
-      case "GithLab":
-        return gitlab;
-      // Add cases for other platforms, like Google, LinkedIn, YouTube
+
       default:
         return null; // If no logo is available
     }
@@ -101,7 +101,7 @@ export default function Phone() {
           if (link.platform === "Google") fill = "#EA4335"; // Google (Red)
           else if (link.platform === "Github")
             fill = "#181717"; // Github (Black)
-          else if (link.platform === "YouTube")
+          else if (link.platform === "Youtube")
             fill = "#FF0000"; // YouTube (Red)
           else if (link.platform === "LinkedIn")
             fill = "#0077B5"; // LinkedIn (Blue)
@@ -134,7 +134,7 @@ export default function Phone() {
                     height={24}
                     style={{ marginRight: "8px" }} // Add some space between logo and text
                   />
-                  <span className="text-xl font-semibold text-text-light">
+                  <span className="text-xl font-semibold text-secondary">
                     {link.platform}
                   </span>
                 </div>
