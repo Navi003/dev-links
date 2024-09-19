@@ -48,40 +48,42 @@ export default function UserLinksContainer() {
           + Add new Link
         </Button>
       </div>
-      {links.length > 0 ? (
-        <ul>
-          {links.map((link, i) => (
-            <AddLink
-              key={i}
-              id={i}
-              link={link}
-              onUpdateLink={updateLinkHandler}
-              onRemoveLink={removeLinkHandler}
-            />
-          ))}
-        </ul>
-      ) : (
-        <div className="p-6 mt-3 rounded-lg bg-bg-light">
-          <div className="flex flex-col items-center justify-center">
-            <Image
-              src={emptyLinkImage}
-              width={200}
-              height={200}
-              alt="Empty Links"
-            />
-            <div>
-              <h2 className="text-3xl font-bold text-center">
-                Let's get you started
-              </h2>
-              <p className=" max-w-[488px] mx-auto text-text-light mt-8">
-                Use the “Add new link” button to get started. Once you have more
-                than one link, you can reorder and edit them. We're here to help
-                you share your profiles with everyone!
-              </p>
+      <div className="max-h-[450px] overflow-scroll containerScroll mt-4">
+        {links.length > 0 ? (
+          <ul>
+            {links.map((link, i) => (
+              <AddLink
+                key={i}
+                link={link}
+                index={i}
+                onUpdateLink={updateLinkHandler}
+                onRemoveLink={removeLinkHandler}
+              />
+            ))}
+          </ul>
+        ) : (
+          <div className="p-6 mt-3 rounded-lg bg-bg-light">
+            <div className="flex flex-col items-center justify-center">
+              <Image
+                src={emptyLinkImage}
+                width={200}
+                height={200}
+                alt="Empty Links"
+              />
+              <div>
+                <h2 className="text-3xl font-bold text-center">
+                  Let's get you started
+                </h2>
+                <p className=" max-w-[488px] mx-auto text-text-light mt-8">
+                  Use the “Add new link” button to get started. Once you have
+                  more than one link, you can reorder and edit them. We're here
+                  to help you share your profiles with everyone!
+                </p>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
       <Button type="button" className="w-full mt-auto text-white bg-primary">
         Save
       </Button>

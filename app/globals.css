@@ -1,3 +1,33 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Target the container with overflow */
+.containerScroll {
+  overflow-y: scroll; /* Enable vertical scrolling */
+  scrollbar-width: thin; /* Firefox - thin scrollbar */
+  scrollbar-color: rgb(122, 51, 254) transparent; /* Firefox - scrollbar colors */
+  overflow-x: hidden; /* Hide the horizontal scrollbar */
+}
+
+/* WebKit browsers (Chrome, Safari, Edge) */
+.containerScroll::-webkit-scrollbar {
+  width: 6px; /* Make scrollbar thinner */
+}
+
+/* Background of the scrollbar track */
+.containerScroll::-webkit-scrollbar-track {
+  background: transparent; /* Transparent background */
+}
+
+/* Scrollbar handle (thumb) */
+.containerScroll::-webkit-scrollbar-thumb {
+  background-color: grey; /* Grey scrollbar color */
+  border-radius: 20px; /* Rounds the top and bottom of the scrollbar */
+  min-height: 20px; /* Ensures thumb stays rounded */
+}
+
+/* Rounded corners on hover */
+.containerScroll::-webkit-scrollbar-thumb:hover {
+  background-color: darkgrey; /* Slightly darker on hover */
+}

@@ -16,10 +16,7 @@ export default function page() {
           right-5 top-5
 
           px-5 py-3 border-[1px] 
-          
           rounded-lg border-primary broder text-primary font-bold bg-secondary
-
-          
           "
             href="/"
             type="link"

@@ -4,6 +4,7 @@ import { LinksProvider } from "./_components/useLinkContext";
 import Navigation from "./_components/Navigation";
 import Container from "./_components/Container";
 import PhoneAside from "./_components/PhoneAside";
+import Button from "./_components/Button";
 
 const instrumentSans = localFont({
   src: "./fonts/InstrumentSans-VariableFont_wdth,wght.ttf",

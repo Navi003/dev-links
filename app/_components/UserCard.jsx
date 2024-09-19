@@ -1,30 +1,16 @@
 "use client";
-import React from "react";
-import { useLinks } from "@/app/_components/useLinkContext";
 import Image from "next/image";
-import Link from "next/link";
-export default function UserCard() {
-  const {
-    imageSrc,
-    url,
-    setUrl,
-    links,
-    setLinks,
+import { useLinks } from "./useLinkContext";
 
-    user,
-    setUser,
-  } = useLinks();
+export default function UserCard() {
+  const { imageSrc, url, setUrl, links, setLinks, user, setUser } = useLinks();
 
   return (
-    <div
-      className="bg-white p-28 translate-y-36 *:
-  flex flex-col gap-5 rounded-lg shadow-lg items-center shadow-black
-  "
-    >
-      <div className="w-32 h-32 bg-red-500 rounded-full overflow-hidden">
+    <div className="flex flex-col items-center gap-5 p-10 bg-white rounded-lg shadow-lg translate-y-36 min-w-96 shadow-black ">
+      <div className="w-32 h-32 overflow-hidden bg-red-500 rounded-full">
         {imageSrc && (
           <Image
-            className="w-full object-cover"
+            className="object-cover w-full"
             src={imageSrc}
             height={50}
             width={50}
@@ -33,15 +19,26 @@ export default function UserCard() {
         )}
       </div>
       <div>
-        <h2 className="font-bold text-3xl text-center">
+        <h2 className="text-3xl font-bold text-center">
           {user.firstName} {user.lastName}
         </h2>
-        <p className="text-center font-thin">{user.email}</p>
+        <p className="font-thin text-center">{user.email}</p>
       </div>
-      <ul className="flex flex-col justify-center items-center gap-5">
+
+      {/* Make the parent ul full width */}
+      <ul className="w-full">
+        {/* Make this li take full width */}
+        <li className="w-full p-2 text-center border rounded-md border-s">
+          Youtube
+        </li>
+
+        {/* Loop through the links */}
         {links.map((link) => {
           return (
-            <li key={link.platform} className="rounded-md p-2">
+            <li
+              key={link.platform}
+              className="w-full p-2 border rounded-md border-s"
+            >
               <a
                 target="_blank"
                 href={
