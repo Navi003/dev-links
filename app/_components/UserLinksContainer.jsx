@@ -11,7 +11,7 @@ import Image from "next/image";
 import { generateRandomId } from "@/app/lib/randomId";
 
 export default function UserLinksContainer() {
-  const { links, setLinks } = useLinks();
+  const { links, setLinks, setUserData, user, imageSrc } = useLinks();
 
   // Add an empty link object when the "Add new Link" button is clicked
   function addLinksHandler() {
@@ -36,7 +36,17 @@ export default function UserLinksContainer() {
     });
   };
 
-  console.log(links);
+  function userDataHandler() {
+    setUserData({
+      links: links,
+      user: {
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        image: imageSrc,
+      },
+    });
+  }
 
   return (
     <div className="flex flex-col justify-between w-full bg-white rounded-lg p-14">
@@ -84,7 +94,11 @@ export default function UserLinksContainer() {
           </div>
         )}
       </div>
-      <Button type="button" className="w-full mt-auto text-white bg-primary">
+      <Button
+        type="button"
+        className="w-full mt-auto text-white bg-primary"
+        onClick={userDataHandler}
+      >
         Save
       </Button>
     </div>

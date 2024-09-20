@@ -9,7 +9,8 @@ import { useLinks } from "./useLinkContext";
 export default function UserProfileContainer() {
   // Create a reference for the hidden file input
   const fileInputRef = useRef(null);
-  const { imageSrc, setImageSrc, setUser, user } = useLinks();
+  const { imageSrc, setImageSrc, setUser, user, setUserData, links } =
+    useLinks();
 
   // Function to trigger the hidden file input click
   const handleImageClick = () => {
@@ -32,6 +33,18 @@ export default function UserProfileContainer() {
     const updatedUser = { ...user, [name]: value };
     setUser(updatedUser);
   };
+
+  function userDataHandler() {
+    setUserData({
+      links: links,
+      user: {
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        image: imageSrc,
+      },
+    });
+  }
 
   return (
     <div className="flex flex-col justify-between w-full gap-4 bg-white rounded-lg p-14">
@@ -101,7 +114,11 @@ export default function UserProfileContainer() {
         </div>
       </form>
 
-      <Button type="button" className="w-full mt-4 text-white bg-primary">
+      <Button
+        type="button"
+        className="w-full mt-4 text-white bg-primary"
+        onClick={userDataHandler}
+      >
         Save
       </Button>
     </div>

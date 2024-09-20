@@ -17,6 +17,10 @@ function LinksProvider({ children }) {
     email: "",
   });
 
+  const [userData, setUserData] = useState({});
+
+  console.log(userData);
+
   return (
     <LinksContext.Provider
       value={{
@@ -28,6 +32,8 @@ function LinksProvider({ children }) {
         setImageSrc,
         user,
         setUser,
+        setUserData,
+        userData,
       }}
     >
       {children}
