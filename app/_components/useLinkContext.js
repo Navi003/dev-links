@@ -19,8 +19,6 @@ function LinksProvider({ children }) {
 
   const [userData, setUserData] = useState({});
 
-  console.log(userData);
-
   return (
     <LinksContext.Provider
       value={{
