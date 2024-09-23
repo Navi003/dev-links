@@ -1,28 +1,10 @@
 "use client";
 import Image from "next/image";
 import { useLinks } from "./useLinkContext"; // Assuming you're using context to get the links
-import twitter from "@/assets/images/icon-twitter.svg";
-import github from "@/assets/images/icon-github.svg"; // Import other logos as needed
-import youtube from "@/assets/images/icon-youtube.svg";
-import gitlab from "@/assets/images/icon-gitlab.svg"; // Import other logos as needed
+import { linkStyleSetter } from "../lib/linkStyleSetter";
 
 export default function Phone() {
   const { links, imageSrc, user } = useLinks(); // Get links and imageSrc from context or pass as props
-
-  // A function to map platform names to their corresponding logo
-  const getPlatformLogo = (platform) => {
-    switch (platform) {
-      case "Twitter":
-        return twitter;
-      case "Youtube":
-        return youtube;
-      case "Github":
-        return github;
-
-      default:
-        return null; // If no logo is available
-    }
-  };
 
   return (
     <svg
@@ -91,21 +73,10 @@ export default function Phone() {
 
       {/* Links rendered dynamically */}
       {links && links.length > 0 ? (
-        links.map((link, index) => {
-          const logo = getPlatformLogo(link.platform);
+        links?.map((link, index) => {
+          const style = linkStyleSetter(link.platform);
 
-          // Skip rendering if no platform or logo is available
-          if (!link.platform || !logo) return null;
-
-          let fill;
-          if (link.platform === "Google") fill = "#EA4335"; // Google (Red)
-          else if (link.platform === "Github")
-            fill = "#181717"; // Github (Black)
-          else if (link.platform === "Youtube")
-            fill = "#FF0000"; // YouTube (Red)
-          else if (link.platform === "LinkedIn")
-            fill = "#0077B5"; // LinkedIn (Blue)
-          else if (link.platform === "Twitter") fill = "#1DA1F2"; // Twitter (Blue)
+          if (!style.icon) return;
 
           return (
             <g key={index}>
@@ -115,7 +86,7 @@ export default function Phone() {
                 height="44"
                 x="35"
                 y={278 + index * 64} // Adjust y position dynamically
-                fill={fill}
+                fill={style.color}
                 rx="8"
               />
               {/* Platform logo and text */}
@@ -128,7 +99,7 @@ export default function Phone() {
                 {/* Inline Flexbox for Logo and Text */}
                 <div className="flex items-center">
                   <Image
-                    src={logo} // Get the correct logo for the platform
+                    src={style.icon} // Get the correct logo for the platform
                     alt={`${link.platform} logo`}
                     width={24} // Adjust the logo size as needed
                     height={24}

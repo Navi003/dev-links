@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import { useLinks } from "./useLinkContext";
+import { linkStyleSetter } from "../lib/linkStyleSetter";
 
 export default function UserCard() {
   const { imageSrc, user, setUser, userData } = useLinks();
@@ -26,14 +27,26 @@ export default function UserCard() {
       </div>
 
       {/* Make the parent ul full width */}
-      <ul className="w-full">
+      <ul className="flex flex-col justify-center w-full gap-2">
         {/* Loop through the links */}
         {userData?.links?.map((link) => {
+          const style = linkStyleSetter(link.platform);
+          console.log(style);
           return (
             <li
+              style={{
+                backgroundColor: style.color,
+                color: style.color === "#000000" && "#FFF",
+              }}
               key={link.platform}
-              className="w-full p-2 text-center border rounded-md border-s"
+              className="flex justify-center w-full gap-2 p-2 text-center border rounded-md border-s "
             >
+              <Image
+                src={style.icon}
+                height={25}
+                width={25}
+                alt={link.platform}
+              />
               <a
                 target="_blank"
                 href={

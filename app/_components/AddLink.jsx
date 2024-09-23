@@ -33,8 +33,18 @@ export default function AddLink({ index, link, onUpdateLink, onRemoveLink }) {
         >
           <option value="">Select a platform</option>
           <option value="Github">Github</option>
-          <option value="Youtube">Youtube</option>
+          <option value="Codepen">Codepen</option>
+          <option value="Codewars">Codewars</option>
+          <option value="Facebook">Facebook</option>
+          <option value="FreeCodeCamp">FreeCodeCamp</option>
+          <option value="FrontendMentor">FrontendMentor</option>
+          <option value="Gitlab">Gitlab</option>
+          <option value="Hashnode">Hashnode</option>
+          <option value="LinkedIn">LinkedIn</option>
+          <option value="StackOverflow">StackOverflow</option>
+          <option value="Twitch">Twitch</option>
           <option value="Twitter">Twitter</option>
+          <option value="Youtube">Youtube</option>
         </select>
       </div>
       <div className="relative flex flex-col gap-1 mt-3">
