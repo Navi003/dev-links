@@ -4,7 +4,7 @@ import { LinksProvider } from "./_components/useLinkContext";
 import Navigation from "./_components/Navigation";
 import Container from "./_components/Container";
 import PhoneAside from "./_components/PhoneAside";
-import Button from "./_components/Button";
+import { cookies } from "next/headers"; // To access cookies server-side
 
 const instrumentSans = localFont({
   src: "./fonts/InstrumentSans-VariableFont_wdth,wght.ttf",
@@ -23,6 +23,24 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+  // Check for the auth token server-side using cookies
+  const authToken = cookies().get("auth-token");
+
+  // If no auth token, don't show the Navigation, Aside, or Main content
+  if (!authToken) {
+    return (
+      <html lang="en">
+        <body
+          className={`${instrumentItalic.variable} ${instrumentSans.variable} antialiased bg-bg-light`}
+        >
+          {/* Render only children, which could be the login page */}
+          {children}
+        </body>
+      </html>
+    );
+  }
+
+  // If the user is authenticated, render the full layout
   return (
     <html lang="en">
       <body
@@ -30,12 +48,14 @@ export default function RootLayout({ children }) {
       >
         <LinksProvider>
           <Container>
-            <Navigation />
-
-            <main className="flex flex-col gap-4 mt-4 md:flex-row">
-              <PhoneAside />
-              {children}
-            </main>
+            <>
+              {/* Render navigation and aside only if authenticated */}
+              <Navigation />
+              <main className="flex flex-col gap-4 mt-4 md:flex-row">
+                <PhoneAside />
+                {children}
+              </main>
+            </>
           </Container>
         </LinksProvider>
       </body>
