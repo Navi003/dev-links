@@ -6,13 +6,13 @@ export function middleware(req) {
   const { pathname } = req.nextUrl;
 
   // Allow requests to login page without token
-  if (pathname.startsWith("/login")) {
+  if (pathname.startsWith("/auth/login")) {
     return NextResponse.next();
   }
 
   // Redirect if not authenticated
   if (!token) {
-    return NextResponse.redirect(new URL("/login", req.url));
+    return NextResponse.redirect(new URL("/auth/login", req.url));
   }
 
   return NextResponse.next(); // Continue if authenticated
