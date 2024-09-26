@@ -4,11 +4,12 @@ import Button from "./Button";
 import Image from "next/image";
 import emailIcon from "@/assets/images/icon-email.svg";
 import passwordIcon from "@/assets/images/icon-password.svg";
+import { userSignUp } from "../lib/actions";
 
 export default function SignUpForm() {
   return (
     <>
-      <form>
+      <form action={userSignUp}>
         {/* Email input with icon */}
         <div className="relative flex flex-col w-full gap-2 mb-3">
           <label className="text-lg">Email</label>
@@ -21,6 +22,7 @@ export default function SignUpForm() {
             <input
               type="text"
               placeholder="Enter your email"
+              name="email"
               className="w-full p-2 pl-12 text-xl rounded-lg shadow-sm outline-none active:shadow-purple-500 focus:shadow-purple-500"
             />
           </div>
@@ -39,6 +41,7 @@ export default function SignUpForm() {
               type="password"
               required
               placeholder="Password"
+              name="password"
               className="w-full p-2 pl-12 text-xl rounded-lg shadow-sm outline-none active:shadow-purple-500 focus:shadow-purple-500"
             />
           </div>
@@ -59,8 +62,6 @@ export default function SignUpForm() {
             />
           </div>
         </div>
-
-        {/* Buttons */}
         <div className="flex gap-2">
           <Button
             type="button"

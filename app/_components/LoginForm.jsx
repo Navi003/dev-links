@@ -6,20 +6,36 @@ import Image from "next/image";
 import emailIcon from "@/assets/images/icon-email.svg";
 import passwordIcon from "@/assets/images/icon-password.svg";
 import { sendRequest } from "../lib/sendRequest";
+import { userSignIn } from "../lib/actions";
 
 export default function LoginForm() {
-  async function handleSubmit(e) {
-    e.preventDefault();
+  const handleSignIn = async (event) => {
+    // Collect form data without using React state
+    const formData = new FormData(event.target);
 
-    const res = await sendRequest(
-      { email: "dhimannavjot1@gmail.com", password: "123456789" },
-      "/api/auth/login"
-    );
-  }
+    // Send form data to your API route (POST request)
+    const response = await fetch("/api/auth/login", {
+      method: "POST",
+      body: formData, // Send the FormData object directly
+    });
+
+    console.log(response);
+
+    // if (data.success) {
+    //   // Store the JWT token (for example, in localStorage)
+    //   localStorage.setItem("token", data.token);
+
+    //   // Redirect or take some other action
+    //   console.log("Sign-in successful, token stored");
+    // } else {
+    //   // Handle errors
+    //   console.log("Sign-in failed:", data.message);
+    // }
+  };
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
+      <form action={handleSignIn}>
         {/* Email input with icon */}
         <div className="relative flex flex-col w-full gap-2 mb-3">
           <label className="text-lg">Email</label>
@@ -32,6 +48,7 @@ export default function LoginForm() {
             <input
               type="text"
               placeholder="Enter your email"
+              name="email"
               className="w-full p-2 pl-12 text-xl rounded-lg shadow-sm outline-none active:shadow-purple-500 focus:shadow-purple-500"
             />
           </div>
@@ -49,6 +66,7 @@ export default function LoginForm() {
             <input
               type="password"
               required
+              name="password"
               placeholder="Enter your email"
               className="w-full p-2 pl-12 text-xl rounded-lg shadow-sm outline-none active:shadow-purple-500 focus:shadow-purple-500"
             />
@@ -59,9 +77,6 @@ export default function LoginForm() {
         <div className="flex gap-2">
           <Button type="button" className="flex-1 bg-primary text-secondary">
             Login
-          </Button>
-          <Button type="button" className="flex-1">
-            Sign up
           </Button>
         </div>
       </form>
