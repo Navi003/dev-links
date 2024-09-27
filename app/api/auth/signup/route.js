@@ -3,10 +3,6 @@ import User from "../../../models/User";
 import bcrypt from "bcryptjs";
 
 export async function GET(req, res) {
-  if (req.method !== "POST") {
-    return res.status(405).json({ message: "Method Not Allowed" });
-  }
-
   const { email, password } = req.body;
 
   if (!email || !password) {
