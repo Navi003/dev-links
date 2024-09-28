@@ -5,37 +5,56 @@ import Button from "./Button";
 import Image from "next/image";
 import emailIcon from "@/assets/images/icon-email.svg";
 import passwordIcon from "@/assets/images/icon-password.svg";
-import { sendRequest } from "../lib/sendRequest";
-import { userSignIn } from "../lib/actions";
+import { useState } from "react";
+
+import { useRouter } from "next/navigation"; // Import Next.js useRouter
+import Cookies from "js-cookie"; // Import js-cookie to handle cookies
 
 export default function LoginForm() {
-  const handleSignIn = async (event) => {
-    // Collect form data without using React state
-    const formData = new FormData(event.target);
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const router = useRouter(); // Use Next.js router to handle redirects
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleSignIn = async (e) => {
+    e.preventDefault();
 
     // Send form data to your API route (POST request)
     const response = await fetch("/api/auth/login", {
       method: "POST",
-      body: formData, // Send the FormData object directly
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData), // Send form data as JSON
     });
 
-    console.log(response);
+    const data = await response.json();
 
-    // if (data.success) {
-    //   // Store the JWT token (for example, in localStorage)
-    //   localStorage.setItem("token", data.token);
+    if (data.success) {
+      // Store the JWT token in cookies
+      Cookies.set("auth-token", data.token, { expires: 1 }); // Cookie expires in 1 day
 
-    //   // Redirect or take some other action
-    //   console.log("Sign-in successful, token stored");
-    // } else {
-    //   // Handle errors
-    //   console.log("Sign-in failed:", data.message);
-    // }
+      // Redirect to the homepage
+      router.push("/"); // Redirect to "/" page after login
+    } else {
+      // Handle errors
+      console.log("Sign-in failed:", data.message);
+    }
   };
 
   return (
     <>
-      <form action={handleSignIn}>
+      <form onSubmit={handleSignIn}>
         {/* Email input with icon */}
         <div className="relative flex flex-col w-full gap-2 mb-3">
           <label className="text-lg">Email</label>
@@ -47,8 +66,10 @@ export default function LoginForm() {
             />
             <input
               type="text"
+              onChange={handleChange}
               placeholder="Enter your email"
               name="email"
+              value={formData.email}
               className="w-full p-2 pl-12 text-xl rounded-lg shadow-sm outline-none active:shadow-purple-500 focus:shadow-purple-500"
             />
           </div>
@@ -66,7 +87,9 @@ export default function LoginForm() {
             <input
               type="password"
               required
+              value={formData.password}
               name="password"
+              onChange={handleChange}
               placeholder="Enter your email"
               className="w-full p-2 pl-12 text-xl rounded-lg shadow-sm outline-none active:shadow-purple-500 focus:shadow-purple-500"
             />
@@ -75,7 +98,11 @@ export default function LoginForm() {
 
         {/* Buttons */}
         <div className="flex gap-2">
-          <Button type="button" className="flex-1 bg-primary text-secondary">
+          <Button
+            onClick={handleSignIn}
+            type="button"
+            className="flex-1 bg-primary text-secondary"
+          >
             Login
           </Button>
         </div>

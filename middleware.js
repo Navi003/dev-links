@@ -1,24 +1,37 @@
-// middleware.js
 import { NextResponse } from "next/server";
 
 export function middleware(req) {
-  const token = req.cookies.get("auth-token");
-  const { pathname } = req.nextUrl;
+  const token = req.cookies.get("auth-token"); // Get the auth token from cookies
+  const { pathname } = req.nextUrl; // Get the current path
 
-  // Allow requests to login page without token
-  if (pathname.startsWith("/auth/login")) {
+  // Redirect authenticated users away from the login or signup page
+  if (
+    token &&
+    (pathname.startsWith("/auth/login") || pathname.startsWith("/auth/signup"))
+  ) {
+    return NextResponse.redirect(new URL("/", req.url)); // Redirect to home page if logged in
+  }
+
+  // Allow requests to login or signup page without token
+  if (
+    pathname.startsWith("/auth/login") ||
+    pathname.startsWith("/auth/signup")
+  ) {
     return NextResponse.next();
   }
 
-  // Redirect if not authenticated
-  if (!token) {
+  // Redirect if not authenticated and trying to access protected routes
+  if (
+    !token &&
+    (pathname.startsWith("/dashboard") || pathname.startsWith("/profile"))
+  ) {
     return NextResponse.redirect(new URL("/auth/login", req.url));
   }
 
-  return NextResponse.next(); // Continue if authenticated
+  return NextResponse.next(); // Continue to the requested page if authenticated
 }
 
-// Apply the middleware to protected routes
+// Apply the middleware to protected routes, login, and signup pages
 export const config = {
-  matcher: ["/", "/dashboard", "/profile"], // Add your protected routes here
+  matcher: ["/auth/login", "/auth/signup", "/dashboard", "/profile", "/"], // Add your routes here
 };
