@@ -26,20 +26,6 @@ export default function RootLayout({ children }) {
   // Check for the auth token server-side using cookies
   const authToken = cookies().get("auth-token");
 
-  // If no auth token, don't show the Navigation, Aside, or Main content
-  if (!authToken) {
-    return (
-      <html lang="en">
-        <body
-          className={`${instrumentItalic.variable} ${instrumentSans.variable} antialiased bg-bg-light`}
-        >
-          {/* Render only children, which could be the login page */}
-          {children}
-        </body>
-      </html>
-    );
-  }
-
   // If the user is authenticated, render the full layout
   return (
     <html lang="en">
@@ -50,9 +36,9 @@ export default function RootLayout({ children }) {
           <Container>
             <>
               {/* Render navigation and aside only if authenticated */}
-              <Navigation />
+              {authToken && <Navigation />}
               <main className="flex flex-col gap-4 mt-4 md:flex-row">
-                <PhoneAside />
+                {authToken && <PhoneAside />}
                 {children}
               </main>
             </>

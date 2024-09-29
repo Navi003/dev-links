@@ -44,12 +44,8 @@ export default function LoginForm() {
     if (data.success) {
       // Store the JWT token in cookies
       Cookies.set("auth-token", data.token, { expires: 1 }); // Cookie expires in 1 day
-
+      router.push("/");
       // Redirect to the homepage
-
-      setTimeout(() => {
-        router.replace("/"); // Replace, so no history entry is added
-      }, 100);
     } else {
       // Handle errors
       console.log("Sign-in failed:", data.message);

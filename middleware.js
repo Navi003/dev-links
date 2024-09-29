@@ -5,12 +5,12 @@ export function middleware(req) {
   const { pathname } = req.nextUrl; // Get the current path
 
   // Redirect authenticated users away from the login or signup page
-  if (
-    token &&
-    (pathname.startsWith("/auth/login") || pathname.startsWith("/auth/signup"))
-  ) {
-    return NextResponse.redirect(new URL("/", req.url)); // Redirect to home page if logged in
-  }
+  // if (
+  //   token &&
+  //   (pathname.startsWith("/auth/login") || pathname.startsWith("/auth/signup"))
+  // ) {
+  //   return NextResponse.redirect(new URL("/", req.url)); // Redirect to home page if logged in
+  // }
 
   // Allow requests to login or signup page without token
   if (
