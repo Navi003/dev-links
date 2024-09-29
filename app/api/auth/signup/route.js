@@ -1,5 +1,5 @@
 import connectToDatabase from "@/app/db/mongodb";
-import User from "@/app/models/User";
+import User from "@/app/model/User";
 import bcrypt from "bcryptjs";
 
 export async function GET(req, res) {
