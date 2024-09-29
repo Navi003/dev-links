@@ -42,9 +42,9 @@ function LinksProvider({ children }) {
 function useLinks() {
   const context = useContext(LinksContext);
 
-  if (context === undefined) {
-    throw new Error("Context was used outside Provider");
-  }
+  // if (context === undefined) {
+  //   throw new Error("Context was used outside Provider");
+  // }
 
   return context;
 }
