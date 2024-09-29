@@ -9,6 +9,7 @@ import { useState } from "react";
 
 import { useRouter } from "next/navigation"; // Import Next.js useRouter
 import Cookies from "js-cookie"; // Import js-cookie to handle cookies
+import { revalidatePath } from "next/cache";
 
 export default function LoginForm() {
   const [formData, setFormData] = useState({
@@ -45,7 +46,10 @@ export default function LoginForm() {
       Cookies.set("auth-token", data.token, { expires: 1 }); // Cookie expires in 1 day
 
       // Redirect to the homepage
-      router.push("/"); // Redirect to "/" page after login
+
+      setTimeout(() => {
+        router.replace("/"); // Replace, so no history entry is added
+      }, 100);
     } else {
       // Handle errors
       console.log("Sign-in failed:", data.message);

@@ -23,7 +23,10 @@ export function middleware(req) {
   // Redirect if not authenticated and trying to access protected routes
   if (
     !token &&
-    (pathname.startsWith("/dashboard") || pathname.startsWith("/profile"))
+    (pathname.startsWith("/") ||
+      pathname.startsWith("/profile") ||
+      pathname.startsWith("/links") ||
+      pathname.startsWith("/preview"))
   ) {
     return NextResponse.redirect(new URL("/auth/login", req.url));
   }
