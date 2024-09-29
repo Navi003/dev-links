@@ -23,9 +23,6 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-  // Check for the auth token server-side using cookies
-  const authToken = cookies().get("auth-token");
-
   // If the user is authenticated, render the full layout
   return (
     <html lang="en">
@@ -35,10 +32,7 @@ export default function RootLayout({ children }) {
         <LinksProvider>
           <Container>
             <>
-              {/* Render navigation and aside only if authenticated */}
-              {authToken && <Navigation />}
               <main className="flex flex-col gap-4 mt-4 md:flex-row">
-                {authToken && <PhoneAside />}
                 {children}
               </main>
             </>

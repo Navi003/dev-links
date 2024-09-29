@@ -8,7 +8,10 @@ import ProfileView from "./ProfileView";
 import Button from "./Button";
 import Logo from "./Logo";
 import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 export default function Navigation() {
+  const router = useRouter();
+
   const handleSignOut = () => {
     Cookies.remove("auth-token"); // Remove the token from cookies
     router.push("/auth/login"); // Redirect to login page
@@ -20,7 +23,11 @@ export default function Navigation() {
       <ProfileView />
 
       <div className="space-x-4">
-        <Button type="button">Logout</Button>
+        <Button onClick={handleSignOut} type="button">
+          {" "}
+          {/* Make this Client component only */}
+          Logout
+        </Button>
         <Button type="link" href="/preview" className="w-full">
           Preview
         </Button>
