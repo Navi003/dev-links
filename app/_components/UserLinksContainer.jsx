@@ -4,11 +4,11 @@ import React from "react";
 import Heading from "./Heading";
 import Button from "./Button";
 import AddLink from "./AddLink";
-
 import { useLinks } from "./useLinkContext";
 import emptyLinkImage from "@/assets/images/illustration-empty.svg";
 import Image from "next/image";
 import { generateRandomId } from "@/app/lib/randomId";
+import { Cookies } from "js-cookie";
 
 export default function UserLinksContainer() {
   const { links, setLinks, setUserData, user, imageSrc } = useLinks();
@@ -16,7 +16,6 @@ export default function UserLinksContainer() {
   // Add an empty link object when the "Add new Link" button is clicked
   function addLinksHandler() {
     const id = generateRandomId();
-
     setLinks((state) => [...state, { platform: "", link: "", id }]);
   }
 
@@ -37,27 +36,34 @@ export default function UserLinksContainer() {
   };
 
   async function userDataHandler() {
+    console.log("UPDATING");
     try {
+      const token =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NmY1YzkxMmIxOWM3ZTVhYjE4YzM4YzAiLCJlbWFpbCI6ImRoaW1hbm5hdmpvdDFAZ21haWwuY29tIiwiaWF0IjoxNzI3ODE4Mjg5LCJleHAiOjE3Mjc4MjE4ODl9.XypkS90XoyMT5mbLYPVne3s9JLPM9-dvswkzYy74QLw";
+      console.log(token);
+
+      const formData = new FormData();
+      formData.append("token", token); // Include the JWT token for authentication
+      formData.append("email", user.email); // Include user's email
+      formData.append("firstName", user.firstName); // First name of the user
+      formData.append("lastName", user.lastName); // Last name of the user
+      formData.append("links", JSON.stringify(links)); // Stringify links array
+
+      // If imageSrc is a file (from an input), append it
+      if (imageSrc) {
+        formData.append("imageSrc", imageSrc); // Assuming imageSrc is a File object
+      }
+
+      console.log(formData);
+
       const response = await fetch("/api/register", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          // Replace with actual user data you want to send
-          links: links, // Assuming `links` is an array of your links
-          user: {
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email,
-            image: imageSrc,
-          },
-        }),
+        body: formData, // Send the FormData object
       });
 
       // Check if the response is okay
       if (!response.ok) {
-        throw new Error("Failed to register user");
+        throw new Error("Failed to update user data");
       }
 
       const data = await response.json(); // Extract JSON data from the response
@@ -65,20 +71,20 @@ export default function UserLinksContainer() {
       console.log(data);
 
       // Set user data state after a successful response
-      // setUserData({
-      //   links: data.userData.links, // or however you want to structure this
-      //   user: {
-      //     firstName: data.userData.user.firstName,
-      //     lastName: data.userData.user.lastName,
-      //     email: data.userData.user.email,
-      //     image: data.userData.user.image,
-      //   },
-      // });
+      setUserData({
+        links: JSON.parse(data.links), // Parse the links back to an array
+        user: {
+          firstName: data.userData.firstName,
+          lastName: data.userData.lastName,
+          email: data.userData.email,
+          image: data.userData.image,
+        },
+      });
     } catch (error) {
-      console.error("Error while registering user:", error);
-      // Handle error (e.g., show a message to the user)
+      console.log(error.message);
     }
   }
+
   return (
     <div className="flex flex-col justify-between w-full bg-white rounded-lg p-14">
       <div>
@@ -115,7 +121,7 @@ export default function UserLinksContainer() {
                 <h2 className="text-3xl font-bold text-center">
                   Let's get you started
                 </h2>
-                <p className=" max-w-[488px] mx-auto text-text-light mt-8">
+                <p className="max-w-[488px] mx-auto text-text-light mt-8">
                   Use the “Add new link” button to get started. Once you have
                   more than one link, you can reorder and edit them. We're here
                   to help you share your profiles with everyone!
