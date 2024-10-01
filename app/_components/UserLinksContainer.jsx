@@ -36,18 +36,49 @@ export default function UserLinksContainer() {
     });
   };
 
-  function userDataHandler() {
-    setUserData({
-      links: links,
-      user: {
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        image: imageSrc,
-      },
-    });
-  }
+  async function userDataHandler() {
+    try {
+      const response = await fetch("/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          // Replace with actual user data you want to send
+          links: links, // Assuming `links` is an array of your links
+          user: {
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            image: imageSrc,
+          },
+        }),
+      });
 
+      // Check if the response is okay
+      if (!response.ok) {
+        throw new Error("Failed to register user");
+      }
+
+      const data = await response.json(); // Extract JSON data from the response
+
+      console.log(data);
+
+      // Set user data state after a successful response
+      // setUserData({
+      //   links: data.userData.links, // or however you want to structure this
+      //   user: {
+      //     firstName: data.userData.user.firstName,
+      //     lastName: data.userData.user.lastName,
+      //     email: data.userData.user.email,
+      //     image: data.userData.user.image,
+      //   },
+      // });
+    } catch (error) {
+      console.error("Error while registering user:", error);
+      // Handle error (e.g., show a message to the user)
+    }
+  }
   return (
     <div className="flex flex-col justify-between w-full bg-white rounded-lg p-14">
       <div>

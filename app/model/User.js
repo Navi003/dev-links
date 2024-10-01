@@ -1,11 +1,53 @@
 import mongoose from "mongoose";
 
-const userSchema = new mongoose.Schema(
-  {
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
+// Schema for user data including email, name, imageSrc, and links
+const UserDataSchema = new mongoose.Schema({
+  email: {
+    type: String,
+    required: true, // Required to ensure it exists within userData
   },
-  { timestamps: true }
-);
+  firstName: {
+    type: String,
+    default: "",
+  },
+  lastName: {
+    type: String,
+    default: "",
+  },
+  image: {
+    type: String,
+    default: "", // Optional profile image URL
+  },
+  links: [
+    {
+      platform: {
+        type: String,
+        required: true,
+      },
+      url: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
+});
 
-export default mongoose.models.User || mongoose.model("User", userSchema);
+// Main User Schema
+const UserSchema = new mongoose.Schema({
+  email: {
+    type: String,
+    required: true,
+    unique: true, // Ensure the email is unique at the top level
+  },
+  password: {
+    type: String,
+    required: true, // Required for user authentication
+  },
+  userData: {
+    type: UserDataSchema,
+    required: true, // Make userData required
+  },
+});
+
+// Export the User model
+export default mongoose.models.User || mongoose.model("User", UserSchema);
