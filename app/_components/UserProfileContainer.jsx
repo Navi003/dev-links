@@ -9,8 +9,15 @@ import { useLinks } from "./useLinkContext";
 export default function UserProfileContainer() {
   // Create a reference for the hidden file input
   const fileInputRef = useRef(null);
-  const { imageSrc, setImageSrc, setUser, user, setUserData, links } =
-    useLinks();
+  const {
+    imageSrc,
+    setImageSrc,
+    setUser,
+    user,
+    setUserData,
+    links,
+    setImagePreview,
+  } = useLinks();
 
   // Function to trigger the hidden file input click
   const handleImageClick = () => {
@@ -20,14 +27,16 @@ export default function UserProfileContainer() {
   };
 
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
+    const file = e.target.files[0]; // Get the first selected file
     if (file) {
-      // Create a URL for the selected image for preview
+      // Store the File object itself to upload later
+      setImageSrc(file); // Keep the file for uploading
+
+      // If you want to preview the image, you can create an image URL
       const imageURL = URL.createObjectURL(file);
-      setImageSrc(imageURL);
+      setImagePreview(imageURL); // Assuming you have state for previewing the image
     }
   };
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     const updatedUser = { ...user, [name]: value };

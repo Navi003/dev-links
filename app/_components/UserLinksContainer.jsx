@@ -39,26 +39,26 @@ export default function UserLinksContainer() {
     console.log("UPDATING");
     try {
       const token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NmY1YzkxMmIxOWM3ZTVhYjE4YzM4YzAiLCJlbWFpbCI6ImRoaW1hbm5hdmpvdDFAZ21haWwuY29tIiwiaWF0IjoxNzI3ODE4Mjg5LCJleHAiOjE3Mjc4MjE4ODl9.XypkS90XoyMT5mbLYPVne3s9JLPM9-dvswkzYy74QLw";
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NmY1YzkxMmIxOWM3ZTVhYjE4YzM4YzAiLCJlbWFpbCI6ImRoaW1hbm5hdmpvdDFAZ21haWwuY29tIiwiaWF0IjoxNzI3OTAzMjAwLCJleHAiOjE3Mjc5MDY4MDB9.sXD6_BEvbgURpcmsbfCAMrKR1wHjzMErp2R3ozsrLdY";
       console.log(token);
 
       const formData = new FormData();
       formData.append("token", token); // Include the JWT token for authentication
-      formData.append("email", user.email); // Include user's email
-      formData.append("firstName", user.firstName); // First name of the user
-      formData.append("lastName", user.lastName); // Last name of the user
-      formData.append("links", JSON.stringify(links)); // Stringify links array
+      formData.append("email", user.email || ""); // Include user's email
+      formData.append("firstName", user.firstName || ""); // First name of the user
+      formData.append("lastName", user.lastName || ""); // Last name of the user
+      formData.append("links", JSON.stringify(links) || []); // Stringify links array
 
       // If imageSrc is a file (from an input), append it
       if (imageSrc) {
-        formData.append("imageSrc", imageSrc); // Assuming imageSrc is a File object
+        formData.append("imageSrc", imageSrc || ""); // Assuming imageSrc is a File object
       }
 
       console.log(formData);
 
       const response = await fetch("/api/register", {
         method: "POST",
-        body: formData, // Send the FormData object
+        body: JSON.stringify({ data }),
       });
 
       // Check if the response is okay

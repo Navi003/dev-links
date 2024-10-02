@@ -16,6 +16,7 @@ function LinksProvider({ children }) {
     lastName: "",
     email: "",
   });
+  const [imagePreview, setImagePreview] = useState();
 
   const [userData, setUserData] = useState({});
 
@@ -32,6 +33,8 @@ function LinksProvider({ children }) {
         setUser,
         setUserData,
         userData,
+        setImagePreview,
+        imagePreview,
       }}
     >
       {children}
