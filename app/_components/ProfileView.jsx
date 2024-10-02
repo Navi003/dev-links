@@ -24,7 +24,7 @@ export default function ProfileView() {
           alt="link"
           className="text-primary"
         />
-        <Link className="hover:text-primary" href="/">
+        <Link className="hover:text-primary" href="/main">
           Links
         </Link>
       </div>
@@ -35,7 +35,7 @@ export default function ProfileView() {
         }`}
       >
         <Image src={profileLogo} height={20} width={20} alt="link" />
-        <Link className="hover:text-primary" href="/profile">
+        <Link className="hover:text-primary" href="/main/profile">
           Profile Details
         </Link>
       </div>
