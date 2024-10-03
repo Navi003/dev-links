@@ -32,9 +32,11 @@ export default function UserProfileContainer() {
       // Store the File object itself to upload later
       setImageSrc(file); // Keep the file for uploading
 
-      // If you want to preview the image, you can create an image URL
+      // Create a preview URL for the image
       const imageURL = URL.createObjectURL(file);
-      setImagePreview(imageURL); // Assuming you have state for previewing the image
+      setImagePreview(imageURL); // Set the preview URL to display the image
+
+      console.log(imageURL); // Check the URL for debugging
     }
   };
   const handleChange = (e) => {
@@ -56,7 +58,7 @@ export default function UserProfileContainer() {
   }
 
   return (
-    <div className="flex flex-col justify-between w-full gap-4 bg-white rounded-lg p-14">
+    <div className="flex flex-col justify-between w-full bg-white rounded-lg p-14">
       <Heading text="Add your details to create a personal touch to your profile.">
         Customize your Profile
       </Heading>

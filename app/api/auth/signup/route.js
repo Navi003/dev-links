@@ -5,6 +5,8 @@ import bcrypt from "bcryptjs";
 export async function GET(req, res) {
   const { email, password } = req.body;
 
+  console.log(email);
+
   if (!email || !password) {
     return res.status(400).json({ message: "Email and password are required" });
   }

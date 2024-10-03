@@ -39,10 +39,11 @@ export default function UserLinksContainer() {
     console.log("UPDATING");
     try {
       const token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NmY1YzkxMmIxOWM3ZTVhYjE4YzM4YzAiLCJlbWFpbCI6ImRoaW1hbm5hdmpvdDFAZ21haWwuY29tIiwiaWF0IjoxNzI3OTAzMjAwLCJleHAiOjE3Mjc5MDY4MDB9.sXD6_BEvbgURpcmsbfCAMrKR1wHjzMErp2R3ozsrLdY";
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NmY1YzkxMmIxOWM3ZTVhYjE4YzM4YzAiLCJlbWFpbCI6ImRoaW1hbm5hdmpvdDFAZ21haWwuY29tIiwiaWF0IjoxNzI3OTg3Mzk1LCJleHAiOjE3Mjc5OTA5OTV9.X9lloEWOhFNFdnXd3vGerMiBvHUjsJXGE0elU-reoCs";
       console.log(token);
 
       const formData = new FormData();
+
       formData.append("token", token); // Include the JWT token for authentication
       formData.append("email", user.email || ""); // Include user's email
       formData.append("firstName", user.firstName || ""); // First name of the user
@@ -54,12 +55,16 @@ export default function UserLinksContainer() {
         formData.append("imageSrc", imageSrc || ""); // Assuming imageSrc is a File object
       }
 
-      console.log(formData);
+      for (let [key, value] of formData.entries()) {
+        console.log(`${key}:`, value);
+      }
 
       const response = await fetch("/api/register", {
         method: "POST",
         body: JSON.stringify({ data }),
       });
+
+      console.log(response);
 
       // Check if the response is okay
       if (!response.ok) {

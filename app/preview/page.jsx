@@ -18,7 +18,7 @@ export default function page() {
           px-5 py-3 border-[1px] 
           rounded-lg border-primary broder text-primary font-bold bg-secondary
           "
-            href="/"
+            href="/main/links"
             type="link"
           >
             back

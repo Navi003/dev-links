@@ -4,7 +4,7 @@ import { useLinks } from "./useLinkContext"; // Assuming you're using context to
 import { linkStyleSetter } from "../lib/linkStyleSetter";
 
 export default function Phone() {
-  const { links, imageSrc, user } = useLinks(); // Get links and imageSrc from context or pass as props
+  const { links, imagePreview, user } = useLinks(); // Get links and imageSrc from context or pass as props
 
   return (
     <svg
@@ -35,9 +35,9 @@ export default function Phone() {
       />
 
       {/* Uploaded image inside the circle */}
-      {imageSrc && (
+      {imagePreview && (
         <image
-          href={imageSrc} // Use the imageSrc passed from context or state
+          href={imagePreview} // Use the imageSrc passed from context or state
           x="105" // Adjust based on circle's cx and r
           y="64" // Adjust based on circle's cy and r
           width="96" // Circle diameter = 2 * radius (48 * 2 = 96)

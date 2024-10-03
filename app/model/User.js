@@ -45,7 +45,7 @@ const UserSchema = new mongoose.Schema({
   },
   userData: {
     type: UserDataSchema,
-    required: true, // Make userData required
+    required: false, // Make userData required
   },
 });
 
