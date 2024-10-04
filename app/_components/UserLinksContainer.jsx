@@ -8,7 +8,7 @@ import { useLinks } from "./useLinkContext";
 import emptyLinkImage from "@/assets/images/illustration-empty.svg";
 import Image from "next/image";
 import { generateRandomId } from "@/app/lib/randomId";
-import { Cookies } from "js-cookie";
+import Cookies from "js-cookie";
 
 export default function UserLinksContainer() {
   const { links, setLinks, setUserData, user, imageSrc } = useLinks();
@@ -36,57 +36,36 @@ export default function UserLinksContainer() {
   };
 
   async function userDataHandler() {
-    console.log("UPDATING");
     try {
-      const token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NmY1YzkxMmIxOWM3ZTVhYjE4YzM4YzAiLCJlbWFpbCI6ImRoaW1hbm5hdmpvdDFAZ21haWwuY29tIiwiaWF0IjoxNzI3OTg3Mzk1LCJleHAiOjE3Mjc5OTA5OTV9.X9lloEWOhFNFdnXd3vGerMiBvHUjsJXGE0elU-reoCs";
-      console.log(token);
-
       const formData = new FormData();
-
-      formData.append("token", token); // Include the JWT token for authentication
       formData.append("email", user.email || ""); // Include user's email
       formData.append("firstName", user.firstName || ""); // First name of the user
       formData.append("lastName", user.lastName || ""); // Last name of the user
-      formData.append("links", JSON.stringify(links) || []); // Stringify links array
+      formData.append("links", JSON.stringify(links) || "[]"); // Stringify links array
 
       // If imageSrc is a file (from an input), append it
       if (imageSrc) {
-        formData.append("imageSrc", imageSrc || ""); // Assuming imageSrc is a File object
-      }
-
-      for (let [key, value] of formData.entries()) {
-        console.log(`${key}:`, value);
+        formData.append("imageSrc", imageSrc); // Assuming imageSrc is a File object
       }
 
       const response = await fetch("/api/register", {
         method: "POST",
-        body: JSON.stringify({ data }),
+        body: formData, // Send FormData directly
+        headers: {
+          Authorization: `Bearer ${Cookies.get("auti-token")}`, // Send token in the headers
+        },
       });
 
       console.log(response);
 
-      // Check if the response is okay
       if (!response.ok) {
         throw new Error("Failed to update user data");
       }
 
-      const data = await response.json(); // Extract JSON data from the response
-
+      const data = await response.json();
       console.log(data);
-
-      // Set user data state after a successful response
-      setUserData({
-        links: JSON.parse(data.links), // Parse the links back to an array
-        user: {
-          firstName: data.userData.firstName,
-          lastName: data.userData.lastName,
-          email: data.userData.email,
-          image: data.userData.image,
-        },
-      });
     } catch (error) {
-      console.log(error.message);
+      console.error(error.message);
     }
   }
 

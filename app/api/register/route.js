@@ -5,63 +5,59 @@ import cloudinary from "@/app/lib/cloudinary"; // Your Cloudinary config
 import jwt from "jsonwebtoken";
 import stream from "stream";
 import { NextResponse } from "next/server";
-import Cookies from "js-cookie"; // Import the cookie parsing library
 
 // Set up Multer storage
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
-// Disable bodyParser for the route
+// Create a handler for the upload middleware
+const uploadMiddleware = upload.fields([{ name: "imageSrc", maxCount: 1 }]);
+
 export const config = {
   api: {
     bodyParser: false, // Disable Next.js default body parser
   },
 };
 
-// Create a handler for the upload middleware
-const uploadMiddleware = upload.fields([{ name: "imageSrc", maxCount: 1 }]);
-
 export async function POST(req, res) {
-  // Use a Promise to handle the multer middleware
-  await new Promise((resolve, reject) => {
-    uploadMiddleware(req, res, (err) => {
-      if (err) {
-        return reject(err);
-      }
-      resolve();
-    });
-  });
-
   try {
-    await connectToDatabase();
+    // Wait for the upload middleware to handle the form data
+    await new Promise((resolve, reject) => {
+      uploadMiddleware(req, res, (err) => {
+        if (err) return reject(err);
+        resolve();
+      });
+    });
 
-    const token = req.headers.get("cookie").split("=").at(1).trim();
-    console.log(token);
+    // Log the body and files to debug issues with form data
+    console.log("Form fields:", req.body); // This should log all form fields (e.g., firstName, lastName, etc.)
+    console.log("Uploaded files:", req.files); // This should log the uploaded image files
 
-    const data = await req.json();
-
-    console.log(data);
-
-    const { email, firstName, lastName, links } = req.body; // Get other fields
-
+    // Extract token from headers or cookies
+    const token = req.headers.get("cookie")?.split("=")[1] || "";
     if (!token) {
-      return NextResponse.json({ error: "JWT token is missing" }); // Handle missing token case
+      return NextResponse.json({ error: "JWT token is missing" });
     }
-
-    console.log(email, firstName);
 
     // Verify the JWT token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const userId = decoded.userId;
 
-    // Handle image upload to Cloudinary if file exists
+    // Extract form fields (make sure these are included in the request body)
+    const { firstName, lastName, email, links } = req.body;
+    console.log("First Name:", firstName); // Check if these are undefined
+    console.log("Last Name:", lastName);
+
     let imageUrl = "";
+
+    // Handle image upload if image is present
     if (req.files && req.files.imageSrc) {
-      const file = req.files.imageSrc[0]; // Access the file from multer
+      const file = req.files.imageSrc[0];
 
       // Stream the file to Cloudinary
       const bufferStream = new stream.PassThrough();
       bufferStream.end(file.buffer);
+
       const result = await new Promise((resolve, reject) => {
         const uploadStream = cloudinary.uploader.upload_stream(
           { resource_type: "auto", public_id: `user_images/${userId}` },
@@ -87,7 +83,7 @@ export async function POST(req, res) {
             firstName,
             lastName,
             image: imageUrl,
-            links: JSON.parse(links),
+            links: JSON.parse(links), // Make sure `links` is being passed correctly
           },
         },
       },
