@@ -13,11 +13,11 @@ const upload = multer({ storage });
 // Create a handler for the upload middleware
 const uploadMiddleware = upload.fields([{ name: "imageSrc", maxCount: 1 }]);
 
-export const config = {
-  api: {
-    bodyParser: false, // Disable Next.js default body parser
-  },
-};
+// export const config = {
+//   api: {
+//     bodyParser: false, // Disable Next.js default body parser
+//   },
+// };
 
 async function runMiddleware(req, res, fn) {
   return new Promise((resolve, reject) => {
