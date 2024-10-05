@@ -4,7 +4,7 @@ import { useLinks } from "./useLinkContext"; // Assuming you're using context to
 import { linkStyleSetter } from "../lib/linkStyleSetter";
 
 export default function Phone() {
-  const { links, imagePreview, user } = useLinks(); // Get links and imageSrc from context or pass as props
+  const { links, imagePreview, userData } = useLinks(); // Get links and imageSrc from context or pass as props
 
   return (
     <svg
@@ -56,7 +56,7 @@ export default function Phone() {
         fill="#000"
         textAnchor="middle" // Center the text horizontally
       >
-        {user.firstName} {user.lastName}
+        {userData.firstName} {userData.lastName}
       </text>
 
       {/* User's email */}
@@ -68,7 +68,7 @@ export default function Phone() {
         fill="#000"
         textAnchor="middle" // Center the text horizontally
       >
-        {user.email}
+        {userData.email}
       </text>
 
       {/* Links rendered dynamically */}

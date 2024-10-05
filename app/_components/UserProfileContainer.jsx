@@ -17,6 +17,7 @@ export default function UserProfileContainer() {
     setUserData,
     links,
     setImagePreview,
+    userData,
   } = useLinks();
 
   // Function to trigger the hidden file input click
@@ -39,11 +40,27 @@ export default function UserProfileContainer() {
       console.log(imageURL); // Check the URL for debugging
     }
   };
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    const updatedUser = { ...user, [name]: value };
-    setUser(updatedUser);
+
+  const handleChange = (event) => {
+    const { name, value, files } = event.target;
+    const newUserData = { ...userData };
+    newUserData[name] = value;
+
+    if (name === "image") {
+      newUserData.image = files[0];
+    }
+    setImageSrc(files);
+    // const imageURL = URL.createObjectURL(files);
+    // setImagePreview(imageURL); // Set the preview URL to display the image
+
+    setUserData(newUserData);
   };
+
+  //  const handleChange = (e) => {
+  //     const { name, value } = e.target;
+  //     const updatedUser = { ...user, [name]: value };
+  //     setUser(updatedUser);
+  //   };
 
   function userDataHandler() {
     setUserData({
@@ -70,6 +87,7 @@ export default function UserProfileContainer() {
             ref={fileInputRef}
             style={{ display: "none" }}
             onChange={handleImageChange}
+            name="image"
           />
 
           <div className="flex flex-col items-center justify-center p-10 rounded-md bg-secondary">

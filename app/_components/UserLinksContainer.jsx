@@ -11,7 +11,9 @@ import { generateRandomId } from "@/app/lib/randomId";
 import Cookies from "js-cookie";
 
 export default function UserLinksContainer() {
-  const { links, setLinks, setUserData, user, imageSrc } = useLinks();
+  const { links, setLinks, setUserData, user, imageSrc, userData } = useLinks();
+
+  // const [formData, setFormData] = useState({});
 
   // Add an empty link object when the "Add new Link" button is clicked
   function addLinksHandler() {
@@ -35,39 +37,65 @@ export default function UserLinksContainer() {
     });
   };
 
-  async function userDataHandler() {
-    try {
-      const formData = new FormData();
-      formData.append("email", user.email || ""); // Include user's email
-      formData.append("firstName", user.firstName || ""); // First name of the user
-      formData.append("lastName", user.lastName || ""); // Last name of the user
-      formData.append("links", JSON.stringify(links) || "[]"); // Stringify links array
+  const userDataHandler = async (event) => {
+    // Standardverhalten abbrechen
+    event.preventDefault();
 
-      // If imageSrc is a file (from an input), append it
-      if (imageSrc) {
-        formData.append("imageSrc", imageSrc); // Assuming imageSrc is a File object
-      }
+    // Daten als Formular aufbereiten
+    const formData = new FormData();
+    formData.append("email", userData.email || ""); // Include user's email
+    formData.append("firstName", userData.firstName || ""); // First name of the user
+    formData.append("lastName", userData.lastName || ""); // Last name of the user
+    formData.append("links", userData.links || "[]"); // Stringify links array
+    formData.append("image", userData.image);
+    if (userData.image) formData.append("image", userData.image);
 
-      const response = await fetch("/api/register", {
-        method: "POST",
-        body: formData, // Send FormData directly
-        headers: {
-          Authorization: `Bearer ${Cookies.get("auti-token")}`, // Send token in the headers
-        },
-      });
+    const response = await fetch("/api/register", {
+      method: "POST",
+      body: formData, // Send FormData directly
+      headers: {
+        Authorization: `Bearer ${Cookies.get("auti-token")}`, // Send token in the headers
+      },
+    });
 
-      console.log(response);
-
-      if (!response.ok) {
-        throw new Error("Failed to update user data");
-      }
-
-      const data = await response.json();
-      console.log(data);
-    } catch (error) {
-      console.error(error.message);
+    if (!response.ok) {
+      throw new Error("Failed to update user data");
     }
-  }
+  };
+
+  // async function userDataHandler() {
+  //   try {
+  //     const formData = new FormData();
+  //     formData.append("email", user.email || ""); // Include user's email
+  //     formData.append("firstName", user.firstName || ""); // First name of the user
+  //     formData.append("lastName", user.lastName || ""); // Last name of the user
+  //     formData.append("links", JSON.stringify(links) || "[]"); // Stringify links array
+
+  //     // If imageSrc is a file (from an input), append it
+  //     if (imageSrc) {
+  //       formData.append("imageSrc", imageSrc); // Assuming imageSrc is a File object
+  //     }
+
+  //     const response = await fetch("/api/register", {
+  //       method: "POST",
+  //       body: formData, // Send FormData directly
+  //       headers: {
+  //         Authorization: `Bearer ${Cookies.get("auti-token")}`, // Send token in the headers
+  //       },
+  //     });
+
+  //     console.log(response);
+
+  //     if (!response.ok) {
+  //       throw new Error("Failed to update user data");
+  //     }
+
+  //     const data = await response.json();
+  //     console.log(data);
+  //   } catch (error) {
+  //     console.error(error.message);
+  //   }
+  // }
 
   return (
     <div className="flex flex-col justify-between w-full bg-white rounded-lg p-14">
